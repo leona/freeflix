@@ -1,0 +1,100 @@
+version: "2.3"
+
+services:
+  caddy:
+    image: caddy:latest
+    restart: unless-stopped
+    container_name: caddy
+    env_file: .env
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - media-server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Caddyfile.dev:/etc/caddy/Caddyfile
+      - ./data/caddy:/data
+      - ./config/caddy:/config
+      - ./navigator/dist:/srv/navigator
+  prowlarr:
+    depends_on:
+      - caddy
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./config/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+    networks:
+      - media-server
+  jellyfin:
+    depends_on:
+      - caddy
+    image: jellyfin/jellyfin:10.8.11
+    container_name: jellyfin
+    restart: unless-stopped
+    networks:
+      - media-server
+    ports:
+      - 8096:8096
+    volumes:
+      - ./config/jellyfin:/config
+      - ./data/jellyfin/cache:/cache
+      - ./data/media:/media
+  navigator:
+    depends_on:
+      - caddy
+      - api
+      - client
+    image: oven/bun:latest
+    container_name: navigator
+    networks:
+      - media-server
+    working_dir: /app
+    command: sh -c "bun install && bun run dev"
+    volumes:
+      - ./navigator:/app
+  api:
+    depends_on:
+      - prowlarr
+      - caddy
+      - client
+    image: oven/bun:latest
+    env_file: .env
+    container_name: api
+    restart: unless-stopped
+    networks:
+      - media-server
+    working_dir: /app
+    command: sh -c "bun install && bun run dev"
+    volumes:
+      - ./api:/app
+      - type: bind
+        source: ./config/prowlarr/config.xml
+        target: /config/prowlarr/config.xml
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    command: sh -c "gow run ./src"
+    container_name: client
+    environment:
+      - WIREGUARD_ENABLED=true
+    networks:
+      - media-server
+    ports:
+      - 8080:80
+    volumes:
+      - ./client:/app
+      - ./config/client/1.conf:/config/1.conf
+      - ./data/media:/data
+    restart: unless-stopped
+networks:
+  media-server:
+    driver: bridge

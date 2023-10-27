@@ -1,0 +1,11 @@
+{$PUBLIC_URL}:8000 {
+  encode gzip
+
+  handle_path /api* {
+    reverse_proxy api
+  }
+  
+  handle {
+    reverse_proxy navigator
+  }
+}

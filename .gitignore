@@ -1,0 +1,6 @@
+config/*
+data/*
+node_modules
+bun.lockb
+dist
+.env

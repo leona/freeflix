@@ -1,0 +1,21 @@
+{$PUBLIC_URL}:443 {
+  encode gzip
+
+  handle_path /api* {
+    reverse_proxy api
+  }
+  
+  handle {
+    root * /srv/navigator
+    try_files {path} /
+    file_server
+  }
+
+  handle_path /jellyfin/* {
+    reverse_proxy jellyfin:8096
+  }
+}
+
+http://{$PUBLIC_URL} {
+ redir https://{host}{uri}
+}
