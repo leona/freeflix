@@ -29,10 +29,10 @@ jobs:
         run: cd client && go build -o ./dist/client ./src
 
       - name: Build API
-        run: cd ../api && bun run build
+        run: cd ./api && bun run build
 
       - name: Build Navigator
-        run: cd ../navigator && bun run build && cd ../
+        run: cd ./navigator && bun run build
 
       - name: Setup SSH
         run: |
