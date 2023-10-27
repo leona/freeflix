@@ -25,6 +25,10 @@ func MakeTorrentclient() *Torrentclient {
 	clientConfig.Seed = false
 
 	if config.WireguardEnable {
+		if wireguardClient == nil {
+			log.Panic("Wireguard is enabled but not configured")
+		}
+
 		clientConfig.HTTPDialContext = wireguardClient.Tnet.DialContext
 		clientConfig.HTTPProxy = nil
 		clientConfig.ClientTrackerConfig.TrackerDialContext = wireguardClient.Tnet.DialContext

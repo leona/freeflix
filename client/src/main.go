@@ -14,13 +14,11 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 
 	if config.MullvadAccount != "" {
-		mullvad := MakeMullvad(config.MullvadAccount)
-		mullvad.GetServers()
+		_ = MakeMullvad(config.MullvadAccount)
 	}
 
 	if config.WireguardEnable {
-		wireguardClient = MakeWireguard(config.WireguardConfigPath)
-		wireguardClient.Connect()
+		wireguardClient = MakeWireguard()
 	}
 
 	torrentClient = MakeTorrentclient()

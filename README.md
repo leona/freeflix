@@ -34,17 +34,22 @@ Copy the example.env file into .env and change the JWT_SECRET and PUBLIC_URL.
 
 ### 3. Wireguard config
 
-Put your Wireguard config into `config/client/1.conf` or disable Wireguard.
+Put your Wireguard config into `config/client/*.conf` or disable Wireguard.
 
 The client container has the following environment variables you can pass
 
 ```
 WIREGUARD_ENABLED=true
-WIREGUARD_CONFIG_PATH=/config/1.conf
 OUTPUT_PATH=/data
 API_PORT=80
 MAX_DOWNLOAD_AGE=7 # Days before files are deleted
+MULLVAD_ACCOUNT=
+MULLVAD_COUNTRIES=nl,germany
 ```
+
+If you pass your [Mullvad](https://mullvad.net) account ID it will automatically download your config files.
+
+Config files will be randomly selected each time the client container starts.
 
 ### 4. Start
 

@@ -10,7 +10,6 @@ export function Snackbar() {
     'error': 'bg-red-500',
   }
 
-  console.log(snackbars)
   return (
     <>
       {snackbars.snackbars.map((snackbar) => (

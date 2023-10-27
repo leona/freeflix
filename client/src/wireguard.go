@@ -17,13 +17,23 @@ import (
 )
 
 type Wireguard struct {
-	ConfigPath string
-	Config     *WireguardConfig
-	Tnet       *netstack.Net
+	Config *WireguardConfig
+	Tnet   *netstack.Net
 }
 
-func MakeWireguard(configPath string) *Wireguard {
+type WireguardKeypair struct {
+	PrivateKey string `json:"privateKey"`
+	PublicKey  string `json:"publicKey"`
+}
+
+func MakeWireguard() *Wireguard {
 	log.Println("Setting up wireguard")
+	configPath, err := GetRandomFile("/config", "conf")
+
+	if err != nil {
+		log.Panic(err)
+	}
+
 	config, err := MakeWireguardConfigFromFile(configPath)
 
 	if err != nil {
@@ -31,10 +41,10 @@ func MakeWireguard(configPath string) *Wireguard {
 	}
 
 	wireguard := &Wireguard{
-		ConfigPath: configPath,
-		Config:     config,
+		Config: config,
 	}
 
+	wireguard.Connect()
 	go wireguard.TestTicker()
 	return wireguard
 }
@@ -69,7 +79,7 @@ func (w *Wireguard) Connect() {
 
 func (w *Wireguard) TestTicker() {
 	interval := 1 * time.Minute
-	tick()
+	w.Test()
 
 	for range time.Tick(interval) {
 		w.Test()
@@ -108,6 +118,7 @@ type WireguardConfig struct {
 }
 
 func MakeWireguardConfigFromFile(configPath string) (*WireguardConfig, error) {
+	log.Println("Reading wireguard config from:", configPath)
 	file, err := os.Open(configPath)
 
 	if err != nil {
