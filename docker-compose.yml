@@ -18,7 +18,7 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./data/caddy:/data
       - ./config/caddy:/config
-      - ./navigator/dist:/srv/navigator
+      - ./navigator:/srv/navigator
   prowlarr:
     depends_on:
       - caddy
@@ -49,17 +49,6 @@ services:
       - ./config/jellyfin:/config
       - ./data/jellyfin/cache:/cache
       - ./data/media:/media
-  navigator:
-    depends_on:
-      - caddy
-    image: oven/bun:latest
-    container_name: navigator
-    networks:
-      - media-server
-    working_dir: /app
-    command: sh -c "bun install && bun run build"
-    volumes:
-      - ./navigator:/app
   api:
     depends_on:
       - prowlarr
@@ -72,7 +61,7 @@ services:
     networks:
       - media-server
     working_dir: /app
-    command: sh -c "bun install && bun run prod"
+    command: sh -c "bun run api.js"
     volumes:
       - ./api:/app
       - type: bind
@@ -82,7 +71,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    command: sh -c "go run ./src"
+    command: sh -c "./client"
     env_file: .env
     container_name: client
     networks:

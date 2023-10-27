@@ -81,8 +81,8 @@ services:
   client:
     build:
       context: ./client
-      dockerfile: Dockerfile
-    command: sh -c "gow run ./src"
+      dockerfile: Dockerfile.dev
+    command: sh -c "echo starting; gow run ./src"
     container_name: client
     env_file: .env
     networks:
