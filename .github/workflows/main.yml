@@ -25,14 +25,14 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Build Client
-        run: cd client && go build -o ./dist/client ./src
-
       - name: Build API
         run: cd ./api && bun install && bun run build
 
       - name: Build Navigator
         run: cd ./navigator && bun install && bun run build
+
+      - name: Build Client
+        run: cd client && go build -o ./dist/client ./src
 
       - name: Setup SSH
         run: |
@@ -45,10 +45,10 @@ jobs:
 
       - name: Copy builds to server
         run: |
-          ssh root@${{ secrets.IP }} "mkdir -p /root/freeflix"
+          ssh root@${{ secrets.IP }} "mkdir -p /root/freeflix && mkdir -p /root/freeflix/api && mkdir -p /root/freeflix/client && mkdir -p /root/freeflix/navigator"
           rsync -vrm ./navigator/dist/* root@${{ secrets.IP }}:/root/freeflix/navigator --delete
           scp ./docker-compose.yml root@${{ secrets.IP }}:/root/freeflix/docker-compose.yml
           scp ./Caddyfile root@${{ secrets.IP }}:/root/freeflix/Caddyfile
-          scp ./api/dist/api.js root@${{ secrets.IP }}:/root/freeflix/api/api.js
+          scp ./api/dist/api.js root@${{ secrets.IP }}:/root/freeflix/api/
           scp ./client/dist/client root@${{ secrets.IP }}:/root/freeflix/client/client
           ssh ${{ secrets.IP }} "cd /root/freeflix && docker-compose up -d --build"
