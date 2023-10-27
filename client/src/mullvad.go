@@ -104,6 +104,10 @@ func (m *Mullvad) Post(endpoint string, data interface{}, response interface{}) 
 		return errors.New(resp.Status)
 	}
 
+	if err := json.Unmarshal(responseText.Bytes(), &response); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -236,8 +240,8 @@ func (m *Mullvad) CheckConfigs() {
 					}
 
 					defer file.Close()
-
-					_, err = file.WriteString("PrivateKey = " + m.Keypair.PrivateKey + "\nEndpoint = " + relay.Ipv4AddrIn + ":51820\nPublicKey = " + relay.PublicKey + "\nAllowedIPs = 0.0.0.0/0\nAddress = " + m.Key.Ipv4Address + "\n")
+					config := "PrivateKey = " + m.Keypair.PrivateKey + "\nEndpoint = " + relay.Ipv4AddrIn + ":51820\nPublicKey = " + relay.PublicKey + "\nAllowedIPs = 0.0.0.0/0\nAddress = " + m.Key.Ipv4Address + "\n"
+					_, err = file.WriteString(config)
 
 					if err != nil {
 						log.Panic(err)
