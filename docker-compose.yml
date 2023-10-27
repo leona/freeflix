@@ -89,7 +89,7 @@ services:
       - media-server
     volumes:
       - ./client:/app
-      - ./config/client/1.conf:/config/1.conf
+      - ./config/client:/config
       - ./data/media:/data
     ports:
       - 6889:6889

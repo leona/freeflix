@@ -91,7 +91,7 @@ services:
       - 8080:80
     volumes:
       - ./client:/app
-      - ./config/client/1.conf:/config/1.conf
+      - ./config/client:/config
       - ./data/media:/data
     restart: unless-stopped
 networks:
