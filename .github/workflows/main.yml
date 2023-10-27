@@ -49,9 +49,10 @@ jobs:
         run: |
           ssh root@${{ secrets.IP }} "mkdir -p /root/freeflix && mkdir -p /root/freeflix/api && mkdir -p /root/freeflix/client && mkdir -p /root/freeflix/navigator"
           rsync -vrm ./navigator/dist/* root@${{ secrets.IP }}:/root/freeflix/navigator --delete
+          ssh root@${{ secrets.IP }} "cd /root/freeflix && docker-compose down"
           scp ./docker-compose.yml root@${{ secrets.IP }}:/root/freeflix/docker-compose.yml
           scp ./client/Dockerfile root@${{ secrets.IP }}:/root/freeflix/client/Dockerfile
           scp ./Caddyfile root@${{ secrets.IP }}:/root/freeflix/Caddyfile
           scp ./api/dist/api.js root@${{ secrets.IP }}:/root/freeflix/api/
           scp ./client/dist/client root@${{ secrets.IP }}:/root/freeflix/client/
-          ssh root@${{ secrets.IP }} "cd /root/freeflix && docker-compose down && docker-compose up -d --build"
+          ssh root@${{ secrets.IP }} "cd /root/freeflix && docker-compose up -d --build"
