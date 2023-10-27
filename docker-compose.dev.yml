@@ -84,8 +84,7 @@ services:
       dockerfile: Dockerfile
     command: sh -c "gow run ./src"
     container_name: client
-    environment:
-      - WIREGUARD_ENABLED=true
+    env_file: .env
     networks:
       - media-server
     ports:

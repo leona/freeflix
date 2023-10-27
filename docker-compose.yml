@@ -83,9 +83,8 @@ services:
       context: ./client
       dockerfile: Dockerfile
     command: sh -c "go run ./src"
+    env_file: .env
     container_name: client
-    environment:
-      - WIREGUARD_ENABLED=true
     networks:
       - media-server
     volumes:
