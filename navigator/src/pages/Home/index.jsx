@@ -49,7 +49,7 @@ const ItemAction = ({ result , downloads, onDownload}) => {
 		loader.set(true)
 
 		try {
-			await api.queue(result.downloadUrl)
+			await api.queue(result.magnetUrl || result.downloadUrl)
 			await new Promise(r => setTimeout(r, 500));
 
 			snackbar.add({
