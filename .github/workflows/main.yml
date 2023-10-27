@@ -34,7 +34,7 @@ jobs:
         run: cd ./navigator && bun install && bun run build
 
       - name: Build Client
-        run: cd client && go build -o ./dist/client ./src
+        run: cd client && CGO_ENABLED=0 go build -a -installsuffix cgo -o ./dist/client ./src
 
       - name: Setup SSH
         run: |
