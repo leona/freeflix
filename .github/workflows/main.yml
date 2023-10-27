@@ -53,5 +53,5 @@ jobs:
           scp ./client/Dockerfile root@${{ secrets.IP }}:/root/freeflix/client/Dockerfile
           scp ./Caddyfile root@${{ secrets.IP }}:/root/freeflix/Caddyfile
           scp ./api/dist/api.js root@${{ secrets.IP }}:/root/freeflix/api/
-          scp ./client/dist/client root@${{ secrets.IP }}:/root/freeflix/client/client
+          scp ./client/dist/client root@${{ secrets.IP }}:/root/freeflix/client/
           ssh root@${{ secrets.IP }} "cd /root/freeflix && docker-compose down && docker-compose up -d --build"
