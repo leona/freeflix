@@ -2,7 +2,7 @@
 
 Search, download and watch torrents from a single place. Support for Wireguard with a built-in killswitch.
 
-![image](https://i.imgur.com/rCIuwfg.png)
+![image](https://i.imgur.com/gYa04jx.png)
 
 ![image](https://i.imgur.com/u0O7OA9.png)
 

@@ -29,6 +29,15 @@ const search = async (query) => {
   return await response.json();
 };
 
+const suggest = async (query) => {
+  const response = await fetch(`${baseUrl}/suggest?query=${query}`, {
+    headers: {
+      Authorization: `Bearer ${loginToken}`,
+    },
+  });
+  return await response.json();
+};
+
 const downloads = async () => {
   const response = await fetch(`${baseUrl}/downloads`, {
     headers: {
@@ -120,4 +129,5 @@ export default {
   watch,
   authenticate,
   checkAuth,
+  suggest,
 };

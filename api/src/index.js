@@ -32,6 +32,9 @@ app.delete("/remove", handlers.remove);
 app.delete("/remove-title", handlers.removeTitle);
 app.get("/watch", handlers.watch);
 app.get("/auth", handlers.authCheck);
+app.get("/suggest", handlers.suggest);
+
+console.log("Listening on port 80");
 
 export default {
   port: 80,
