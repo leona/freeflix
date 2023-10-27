@@ -115,6 +115,11 @@ const ItemAction = ({ result , downloads, onDownload}) => {
 
 const Item = ({ result, downloads, onDownload, query }) => {
 	const title = result.title.replace(/\./g, ' ')	
+
+	if (!title.length) {
+		return null
+	}
+	
 	const start = title.toLowerCase().indexOf(query.toLowerCase())
 	const end = start + query.length
 	const before = title.slice(0, start)
