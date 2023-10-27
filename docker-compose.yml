@@ -71,7 +71,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    command: sh -c "/app/client/client"
+    command: sh -c "sleep 99999s; /app/client/client"
     env_file: .env
     container_name: client
     networks:
