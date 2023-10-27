@@ -16,13 +16,16 @@ Search, download and watch torrents from a single place. Support for Wireguard w
 - Client - Go [torrent](https://github.com/anacrolix/torrent)+[Wireguard](https://github.com/WireGuard/wireguard-go) client & API
 
 ## Requirements
+
 - docker + docker-compose
 - Wireguard config file (optional)
 
 ## Setup
+
 This was made to run on a remote machine with a domain setup for SSL, but can work fine locally too.
 
 ### 1. Clone the repo
+
 `git clone https://github.com/leona/freeflix.git`
 
 ### 2. Setup .env
@@ -43,15 +46,15 @@ API_PORT=80
 MAX_DOWNLOAD_AGE=7 # Days before files are deleted
 ```
 
-### 3. Start
+### 4. Start
 
 `docker-compose up`
 
-### 4. Setup Prowlarr
+### 5. Setup Prowlarr
 
 Go to `localhost:9696` in order to setup a Prowlarr user and add at least 1 or 2 indexers.
 
-### 5. Setup Jellyfin
+### 6. Setup Jellyfin
 
 Go to `localhost:8096` and setup a user and media library. Use /media as the folder and disable meta info checking as it breaks stuff.
 
@@ -59,13 +62,15 @@ Also create an API key from Administration > Dashboard > Advanced > API Keys and
 
 You can get clients for your phone, TV etc. to connect directly to this container.
 
-### 6. Good to go!
+### 7. Good to go!
 
 If you visit `localhost` you should be able to access the frontend. The same user/pass combo as Jellyfin is used here, so you can add users through there.
 
 ### Test leaks
+
 The Wireguard setup changes the transports of the torrent client, so it's worth checking if anything is leaking.
 https://ipleak.net/
 
 ## Development
+
 `docker-compose -f docker-compose.dev.yml up`
