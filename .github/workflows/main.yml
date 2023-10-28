@@ -47,8 +47,8 @@ jobs:
           echo JELLYFIN_API_KEY=${{ secrets.JELLYFIN_API_KEY }} >> .env
           echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
           echo MULLVAD_ACCOUNT=${{ secrets.MULLVAD_ACCOUNT }} >> .env
-          echo PRIV_KEY=${{ secrets.PRIV_KEY }} >> .env
-          echo PUB_KEY=${{ secrets.PUB_KEY }} >> .env
+          echo "PRIV_KEY=${{ secrets.PRIV_KEY }}" >> .env
+          echo "PUB_KEY=${{ secrets.PUB_KEY }}" >> .env
 
       - name: Setup SSH
         run: |
