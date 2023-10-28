@@ -37,7 +37,7 @@ jobs:
         run: bun run build:navigator
 
       - name: Build Client
-        run: apps/client/build.sh
+        run: cd apps/client && ./build.sh
 
       - name: Create .env
         run: |
