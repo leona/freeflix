@@ -83,6 +83,8 @@ services:
       - type: bind
         source: ./config/prowlarr
         target: /config/prowlarr
+        bind:
+          create_host_path: true
   client:
     build:
       context: ./client
