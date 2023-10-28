@@ -1,0 +1,11 @@
+FROM alpine
+
+WORKDIR /app
+
+RUN apk update && apk add go alpine-sdk
+
+ENV GOPATH="/root/go"
+ENV PATH="$PATH:$GOPATH/bin"
+ADD go.mod /app/
+ADD go.sum /app/
+RUN go mod download

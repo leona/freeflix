@@ -2,7 +2,7 @@
   encode gzip
 
   handle_path /api* {
-    reverse_proxy api
+    reverse_proxy api:3000
   }
   
   handle {

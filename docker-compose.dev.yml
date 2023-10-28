@@ -16,7 +16,6 @@ services:
       - ./Caddyfile.dev:/etc/caddy/Caddyfile
       - ./data/caddy:/data
       - ./config/caddy:/config
-      - ./navigator/dist:/srv/navigator
   prowlarr:
     depends_on:
       - caddy
@@ -48,23 +47,17 @@ services:
       - ./data/jellyfin/cache:/cache
       - "$OUTPUT_PATH:/media"
   navigator:
-    depends_on:
-      - caddy
-      - api
-      - client
     image: oven/bun:latest
     container_name: navigator
     networks:
       - media-server
     working_dir: /app
-    command: sh -c "bun install && bun run dev"
+    command: sh -c "bun install && bun run dev:navigator"
     volumes:
-      - ./navigator:/app
+      - ./:/app
+    ports:
+      - 8001:80
   api:
-    depends_on:
-      - prowlarr
-      - caddy
-      - client
     image: oven/bun:latest
     env_file: .env
     container_name: api
@@ -72,18 +65,14 @@ services:
     networks:
       - media-server
     working_dir: /app
-    command: sh -c "bun install && bun run dev"
+    command: sh -c "bun install && bun run dev:api"
     volumes:
-      - ./api:/app
-      - type: bind
-        source: ./config/prowlarr
-        target: /config/prowlarr
-        bind:
-          create_host_path: true
+      - ./:/app
   client:
     build:
-      context: ./client
-      dockerfile: Dockerfile.dev
+      context: ./apps/client
+      dockerfile: Dockerfile
+    working_dir: /app/apps/client
     command: sh -c "echo starting; gow run ./src"
     container_name: client
     env_file: .env
@@ -92,8 +81,7 @@ services:
     ports:
       - 8080:80
     volumes:
-      - ./client:/app
-      - ./config/client:/config
+      - ./:/app
       - "$OUTPUT_PATH:/data"
     restart: unless-stopped
 networks:

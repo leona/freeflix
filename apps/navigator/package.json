@@ -1,0 +1,24 @@
+{
+  "name": "@apps/navigator",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 80 --host",
+    "build": "vite build --outDir ../../dist/navigator --emptyOutDir",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@preact/preset-vite": "^2.5.0",
+    "@preact/signals": "^1.2.1",
+    "bun-types": "^1.0.7",
+    "jsonwebtoken": "^9.0.2",
+    "preact": "^10.13.1",
+    "preact-iso": "^2.3.2",
+    "preact-router": "^4.1.2",
+    "sass": "^1.69.4",
+    "vite": "^4.3.2"
+  },
+  "eslintConfig": {
+    "extends": "preact"
+  }
+}

@@ -1,6 +1,7 @@
 #!/bin/sh
 # For provisioning a fresh Vultr Alpine instance with block storage attached
 
+apk update && apk upgrade
 apk add docker docker-compose fail2ban rsync
 mkdir /root/freeflix && mkdir /root/freeflix/config && mkdir /root/freeflix/data
 rc-update add fail2ban

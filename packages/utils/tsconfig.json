@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "experimentalDecorators": true,
+    "outDir": "../../dist/packages/utils",
+    "baseUrl": "./src"
+  },
+  "include": ["./src/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
