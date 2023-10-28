@@ -12,7 +12,7 @@ export let client = copyClient();
 
 const authenticate = async ({ username, password }) => {
   const response = await client.auth.$post({
-    body: {
+    json: {
       username,
       password,
     },
@@ -32,7 +32,7 @@ const queue = async (url) => {
   console.log("queueing:", url);
 
   const response = await client.queue.$post({
-    body: {
+    json: {
       url,
     },
   });
@@ -71,7 +71,7 @@ const downloads = async () => {
 
 const remove = async (hash) => {
   const response = await client.remove.$delete({
-    body: {
+    json: {
       hash,
     },
   });
@@ -80,8 +80,8 @@ const remove = async (hash) => {
 };
 
 const removeByTitle = async (title) => {
-  const response = await client.removeTitle.$delete({
-    body: {
+  const response = await client["remove-title"].$delete({
+    json: {
       title,
     },
   });
