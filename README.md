@@ -53,7 +53,7 @@ Config files will be randomly selected each time the client container starts.
 
 ### 4. Start
 
-`docker-compose up`
+`docker-compose --profile build up && docker-compose --profile serve up -d`
 
 ### 5. Setup Prowlarr
 
