@@ -81,8 +81,8 @@ services:
     volumes:
       - ./api:/app
       - type: bind
-        source: ./config/prowlarr/config.xml
-        target: /config/prowlarr/config.xml
+        source: ./config/prowlarr
+        target: /config/prowlarr
   client:
     build:
       context: ./client
