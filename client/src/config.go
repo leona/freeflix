@@ -18,7 +18,7 @@ type Config struct {
 func MakeConfig() *Config {
 	config := &Config{
 		WireguardEnable:  os.Getenv("WIREGUARD_ENABLED") == "true",
-		OutputPath:       DefaultString(os.Getenv("OUTPUT_PATH"), "/data"),
+		OutputPath:       "/data",
 		ApiPort:          DefaultString(os.Getenv("API_PORT"), "80"),
 		MullvadAccount:   DefaultString(os.Getenv("MULLVAD_ACCOUNT"), ""),
 		MullvadCountries: DefaultSlice(os.Getenv("MULLVAD_COUNTRIES"), []string{"nl"}),
