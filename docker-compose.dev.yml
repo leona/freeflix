@@ -46,7 +46,7 @@ services:
     volumes:
       - ./config/jellyfin:/config
       - ./data/jellyfin/cache:/cache
-      - ./data/media:/media
+      - "$OUTPUT_PATH:/media"
   navigator:
     depends_on:
       - caddy
@@ -92,7 +92,7 @@ services:
     volumes:
       - ./client:/app
       - ./config/client:/config
-      - ./data/media:/data
+      - "$OUTPUT_PATH:/data"
     restart: unless-stopped
 networks:
   media-server:

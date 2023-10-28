@@ -116,12 +116,10 @@ const ItemAction = ({ result , downloads, onDownload}) => {
 const Item = ({ result, downloads, onDownload, query }) => {
 	const search = useContext(Search)
 	const title = result.title.replace(/\./g, ' ')	
-
 	const start = title.toLowerCase().indexOf(search.query.toLowerCase())
 	const end = start + search.query.length
 	const before = title.slice(0, start)
 	const after = title.slice(end, title.length)
-
 
   return (
     <div class="flex flex-row justify-between">
