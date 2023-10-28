@@ -1,7 +1,7 @@
 #!/bin/sh
 # For provisioning a fresh Vultr Alpine instance with block storage attached
 
-apk add docker docker-compose fail2ban
+apk add docker docker-compose fail2ban rsync
 rc-update add fail2ban
 rc-update add docker boot
 service docker start

@@ -70,4 +70,7 @@ jobs:
           scp ./Caddyfile root@${{ secrets.IP }}:/root/freeflix/Caddyfile
           scp ./api/dist/api.js root@${{ secrets.IP }}:/root/freeflix/api/
           scp ./client/dist/client root@${{ secrets.IP }}:/root/freeflix/client/
+
+      - name: Start server
+        run: |
           ssh root@${{ secrets.IP }} "cd /root/freeflix && docker-compose up -d --build"
