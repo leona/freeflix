@@ -80,6 +80,7 @@ services:
       - media-server
     ports:
       - 8080:80
+      - "9955:9955/udp"
     volumes:
       - ./:/app
       - "$OUTPUT_PATH:/data"

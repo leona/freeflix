@@ -17,8 +17,9 @@ import (
 )
 
 type Wireguard struct {
-	Config *WireguardConfig
-	Tnet   *netstack.Net
+	Config        *WireguardConfig
+	Tnet          *netstack.Net
+	PublicAddress string
 }
 
 type WireguardKeypair struct {
@@ -106,7 +107,9 @@ func (w *Wireguard) Test() {
 		log.Panic(err)
 	}
 
-	log.Println("Wireguard connected on IP:", string(body))
+	w.PublicAddress = strings.TrimSpace(string(body))
+	log.Println("Wireguard connected on IP:", w.PublicAddress)
+
 }
 
 type WireguardConfig struct {
