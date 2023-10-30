@@ -1,12 +1,9 @@
 package main
 
 import (
-	"context"
 	"errors"
 	"log"
-	"net"
 	"net/http"
-	"net/netip"
 	"os"
 	"path/filepath"
 	"strings"
@@ -23,41 +20,6 @@ type Torrentclient struct {
 	Speeds             map[string]int64
 }
 
-func ListenHost(network string) string {
-	return wireguardClient.PublicAddress
-}
-
-func ListenPacket(network, address string) (net.PacketConn, error) {
-	addrPort := netip.AddrPortFrom(netip.MustParseAddr(wireguardClient.Config.Address), 0)
-	udpAddr := net.UDPAddrFromAddrPort(addrPort)
-	return wireguardClient.Tnet.ListenUDP(udpAddr)
-}
-
-type Dialer struct {
-}
-
-func (d Dialer) Dial(context context.Context, address string) (net.Conn, error) {
-	return wireguardClient.Tnet.DialContext(context, "udp", address)
-}
-
-func (d Dialer) DialerNetwork() string {
-	return "udp"
-}
-
-type RoundTripper struct {
-}
-
-func (rt RoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
-	client := http.Client{
-		Timeout: 15 * time.Second,
-		Transport: &http.Transport{
-			DialContext: wireguardClient.Tnet.DialContext,
-		},
-	}
-
-	return client.Do(req)
-}
-
 func ConfigureDht(config *dht.ServerConfig) {
 	config.Passive = true
 }
@@ -66,34 +28,17 @@ func MakeTorrentclient() *Torrentclient {
 	clientConfig := torrent.NewDefaultClientConfig()
 	clientConfig.DataDir = config.OutputPath
 	clientConfig.Seed = false
-
-	if config.WireguardEnable {
-		if wireguardClient == nil {
-			log.Panic("Wireguard is enabled but not configured")
-		}
-
-		clientConfig.HTTPDialContext = wireguardClient.Tnet.DialContext
-		clientConfig.HTTPProxy = nil
-		clientConfig.WebTransport = RoundTripper{}
-		clientConfig.ClientTrackerConfig.TrackerDialContext = wireguardClient.Tnet.DialContext
-		clientConfig.ClientTrackerConfig.TrackerListenPacket = ListenPacket
-		clientConfig.NoDefaultPortForwarding = true
-		clientConfig.SetListenAddr(wireguardClient.PublicAddress + ":42069")
-		clientConfig.PublicIp4 = net.ParseIP(wireguardClient.PublicAddress)
-		clientConfig.DisableWebtorrent = false
-		clientConfig.DisableWebseeds = false
-		clientConfig.ClientDhtConfig.NoDHT = false
-		clientConfig.ClientTrackerConfig.DisableTrackers = false
-		clientConfig.ClientDhtConfig.ConfigureAnacrolixDhtServer = ConfigureDht
-	}
-
+	clientConfig.NoDefaultPortForwarding = true
+	clientConfig.DisableWebtorrent = false
+	clientConfig.DisableWebseeds = false
+	clientConfig.ClientDhtConfig.NoDHT = false
+	clientConfig.ClientTrackerConfig.DisableTrackers = false
+	clientConfig.ClientDhtConfig.ConfigureAnacrolixDhtServer = ConfigureDht
 	client, err := torrent.NewClient(clientConfig)
 
 	if err != nil {
 		log.Panic(err)
 	}
-
-	client.AddDialer(Dialer{})
 
 	torrentclient := &Torrentclient{
 		Client:             client,

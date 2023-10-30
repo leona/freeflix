@@ -45,7 +45,6 @@ jobs:
           echo MULLVAD_COUNTRIES=${{ vars.MULLVAD_COUNTRIES }} >> .env
           echo OUTPUT_PATH=${{ vars.OUTPUT_PATH }} >> .env
           echo PUBLIC_URL=${{ vars.PUBLIC_URL }} >> .env
-          echo WIREGUARD_ENABLED=${{ vars.WIREGUARD_ENABLED }} >> .env
           echo JELLYFIN_API_KEY=${{ secrets.JELLYFIN_API_KEY }} >> .env
           echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
           echo MULLVAD_ACCOUNT=${{ secrets.MULLVAD_ACCOUNT }} >> .env

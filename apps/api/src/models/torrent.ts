@@ -1,4 +1,4 @@
-const baseUrl = `http://client`;
+const baseUrl = `http://wireguard`;
 
 const downloads = async () => {
   const response = await fetch(`${baseUrl}/downloads`, {

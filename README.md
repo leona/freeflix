@@ -39,7 +39,6 @@ Put your Wireguard config into `config/client/*.conf` or disable Wireguard.
 The client container has the following environment variables you can pass
 
 ```
-WIREGUARD_ENABLED=true
 OUTPUT_PATH=/data
 API_PORT=80
 MAX_DOWNLOAD_AGE=7 # Days before files are deleted

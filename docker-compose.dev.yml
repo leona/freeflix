@@ -72,17 +72,29 @@ services:
     build:
       context: ./apps/client
       dockerfile: Dockerfile
+    depends_on:
+      - wireguard
     working_dir: /app/apps/client
     command: sh -c "echo starting; gow run ./src"
     container_name: client
     env_file: .env
-    networks:
-      - media-server
-    ports:
-      - 8080:80
+    network_mode: container:wireguard
     volumes:
       - ./:/app
       - "$OUTPUT_PATH:/data"
+    restart: unless-stopped
+  wireguard:
+    image: nxie/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - media-server
+    volumes:
+      - ./config/wireguard:/config
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 51820:51820/udp
     restart: unless-stopped
 networks:
   media-server:

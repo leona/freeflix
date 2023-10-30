@@ -85,6 +85,8 @@ services:
     volumes:
       - ./:/app
   client:
+    depends_on:
+      - wireguard
     profiles: [serve]
     image: alpine:latest
     logging:
@@ -94,11 +96,25 @@ services:
     command: /app/dist/client
     env_file: .env
     container_name: client
-    networks:
-      - media-server
+    network_mode: container:wireguard
     volumes:
       - ./:/app
       - "$OUTPUT_PATH:/data"
+    restart: unless-stopped
+  wireguard:
+    profiles: [serve]
+    env_file: .env
+    image: nxie/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - media-server
+    volumes:
+      - ./config/wireguard:/config
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 51820:51820/udp
     restart: unless-stopped
   api-build:
     profiles: [build]
