@@ -62,6 +62,7 @@ jobs:
         run: |
           ssh root@${{ secrets.IP }} "mkdir -p /root/freeflix"
           rsync -vrm ./dist/* root@${{ secrets.IP }}:/root/freeflix/dist --delete
+          ssh root@${{ secrets.IP }} "docker pull nxie/wireguard"
           ssh root@${{ secrets.IP }} "cd /root/freeflix && docker-compose --profile serve down; exit 0"
           scp ./docker-compose.yml root@${{ secrets.IP }}:/root/freeflix/docker-compose.yml
           scp ./.env root@${{ secrets.IP }}:/root/freeflix/.env
