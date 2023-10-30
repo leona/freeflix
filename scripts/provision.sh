@@ -2,7 +2,11 @@
 # For provisioning a fresh Vultr Alpine instance with block storage attached
 
 apk update && apk upgrade
-apk add docker docker-compose fail2ban rsync
+apk add docker docker-compose fail2ban rsync openvpn
+modprobe tun || exit 0
+echo "tun" >> /etc/modules-load.d/tun.conf
+echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.d/ipv4.conf
+sysctl -p /etc/sysctl.d/ipv4.conf
 mkdir /root/freeflix && mkdir /root/freeflix/config && mkdir /root/freeflix/data
 rc-update add fail2ban
 rc-update add docker boot

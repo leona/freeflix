@@ -72,9 +72,14 @@ If you visit `localhost` you should be able to access the frontend. The same use
 
 ### Test leaks
 
-The Wireguard setup changes the transports of the torrent client, so it's worth checking if anything is leaking.
 https://ipleak.net/
 
 ## Development
 
 `docker-compose -f docker-compose.dev.yml up`
+
+## Todo
+
+- Scan libraries when torrents complete
+- Verify file downloads on client restart
+- Fix issues with prowlarr links

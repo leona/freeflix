@@ -86,7 +86,7 @@ func (tc *Torrentclient) Add(magnet string) error {
 		}
 	}
 
-	log.Println("Adding torrent:", magnet)
+	log.Println("Adding torrent:", magnet, "with public IPs:", tc.Client.PublicIPs())
 	torrent, err := tc.Client.AddMagnet(magnet)
 
 	if err != nil {
