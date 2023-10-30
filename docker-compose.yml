@@ -85,8 +85,9 @@ services:
     volumes:
       - ./:/app
   client:
-    wireguard:
-      condition: service_healthy
+    depends_on:
+      wireguard:
+        condition: service_healthy
     profiles: [serve]
     image: alpine:latest
     logging:
