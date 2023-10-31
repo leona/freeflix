@@ -51,7 +51,7 @@ func (s *Scraper) Sort(torrents []Torrent) []Torrent {
 
 func (s *Scraper) Query(query string) ([]Torrent, error) {
 	var torrents []Torrent
-	sources := GetSources
+	sources := s.GetSources()
 
 	for _, source := range sources {
 		c := colly.NewCollector(

@@ -21,15 +21,6 @@ func Make1337xSource() *Source1337x {
 	}
 }
 
-func (s *Source1337x) IsTorrentUrl(path string) bool {
-	var validUrlPattern = `^\/torrent\/\d+\/[^\/]+\/`
-	matched, err := regexp.MatchString(validUrlPattern, path)
-	if err != nil {
-		fmt.Println("An error occurred")
-	}
-	return matched
-}
-
 func (s *Source1337x) Name() string {
 	return "1337x"
 }
