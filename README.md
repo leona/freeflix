@@ -11,7 +11,7 @@ Search, download and watch torrents from a single place. Support for Wireguard w
 - [Jellyfin](https://jellyfin.org/) media player & user management
 - React frontend for search/downloads
 - Go [torrent client](https://github.com/anacrolix/torrent/)
-- 1337x scraper for searches (more planned)
+- 1337x & ThePirateBay scrapers (more planned)
 - [Docker Wireguard](https://github.com/leona/docker-wireguard) with automatic Mullvad configuration
 - [Caddy](https://caddyserver.com/) reverse proxy & automatic SSL
 

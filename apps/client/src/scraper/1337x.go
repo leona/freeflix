@@ -1,16 +1,16 @@
 package scraper
 
 import (
-	"log"
 	"net/url"
-	"strconv"
 
 	"github.com/gocolly/colly/v2"
 )
 
 type Source1337x struct {
-	BaseUrl  string
-	Torrents []Torrent
+	Source
+	BaseUrl   string
+	Torrents  []Torrent
+	Collector *colly.Collector
 }
 
 func Make1337xSource() *Source1337x {
@@ -23,41 +23,32 @@ func (s *Source1337x) Name() string {
 	return "1337x"
 }
 
+func (s *Source1337x) RequiresCollector() bool {
+	return true
+}
+
+func (s *Source1337x) SetCollector(c *colly.Collector) {
+	s.Collector = c
+}
+
 func (s *Source1337x) Query(query string) string {
 	return s.BaseUrl + "/search/" + url.QueryEscape(query) + "/1/"
 }
 
-func (s *Source1337x) Parse(c *colly.Collector) {
-	c.OnHTML("table tbody tr td.name", func(e *colly.HTMLElement) {
+func (s *Source1337x) Parse(url string) {
+	s.Collector.OnHTML("table tbody tr td.name", func(e *colly.HTMLElement) {
 		link := e.ChildAttr("a:nth-child(2)", "href")
 		e.Request.Visit(link)
 	})
 
-	c.OnHTML(".torrent-detail-page", func(e *colly.HTMLElement) {
-		size := e.ChildText("ul:nth-child(2) li:nth-child(4) span")
-		seedersString := e.ChildText(".seeds")
-		seeders, err := strconv.Atoi(seedersString)
-
-		if err != nil {
-			log.Println("Error converting seeders to int:", seedersString, err)
-			return
-		}
-
-		leechesString := e.ChildText(".leeches")
-		leeches, err := strconv.Atoi(leechesString)
-
-		if err != nil {
-			log.Println("Error converting leeches to int:", leechesString, err)
-			return
-		}
-
+	s.Collector.OnHTML(".torrent-detail-page", func(e *colly.HTMLElement) {
 		torrent := Torrent{
 			Name:       e.ChildText(".box-info-heading h1"),
-			Link :      e.Request.URL.String(),
+			Link:       e.Request.URL.String(),
 			Magnet:     e.ChildAttr("div div ul:nth-child(1) li:nth-child(1) a", "href"),
-			Seeders:    seeders,
-			Leechers:   leeches,
-			Size:       size,
+			Seeders:    DefaultInt(e.ChildText(".seeds"), 0),
+			Leechers:   DefaultInt(e.ChildText(".leeches"), 0),
+			Size:       e.ChildText("ul:nth-child(2) li:nth-child(4) span"),
 			Source:     s.Name(),
 			UploadDate: e.ChildText("div div ul:nth-child(3) li:nth-child(3) span"),
 		}

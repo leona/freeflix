@@ -133,7 +133,7 @@ const Item = ({ result, downloads, onDownload, query }) => {
 				</a>
 				<div class="flex space-x-2">
 					<p class="text-xs">Size: <strong>{result.size}</strong></p>		
-					<p class="text-xs">Age: <strong>{result.uploadDate} days</strong></p>
+					<p class="text-xs">Age: <strong>{result.uploadDate}</strong></p>
 					<p class="text-xs">Source: <strong>{result.source}</strong></p>
 					<p class="text-xs">Seeders: <strong>{result.seeders}</strong></p>
 				</div>
