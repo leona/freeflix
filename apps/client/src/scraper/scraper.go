@@ -35,7 +35,7 @@ func MakeScraper() *Scraper {
 	return scraper
 }
 
-func (s *Scraper) GetSources() {
+func (s *Scraper) GetSources() []Source {
 	return[]Source{
 		Make1337xSource(),
 	}
@@ -50,8 +50,8 @@ func (s *Scraper) Sort(torrents []Torrent) []Torrent {
 }
 
 func (s *Scraper) Query(query string) ([]Torrent, error) {
-	sources := GetSources
 	var torrents []Torrent
+	sources := GetSources
 
 	for _, source := range sources {
 		c := colly.NewCollector(
