@@ -111,6 +111,22 @@ const checkAuth = async () => {
   }
 };
 
+const generateDownload = async (name) => {
+  const response = await client.download.$post({
+    query: {
+      name,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!data.token) {
+    throw new Error("Failed to generate download token");
+  }
+
+  return data.token;
+};
+
 export default {
   queue,
   search,
@@ -121,4 +137,5 @@ export default {
   authenticate,
   checkAuth,
   suggest,
+  generateDownload,
 };

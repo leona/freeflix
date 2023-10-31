@@ -1,24 +1,74 @@
 import torrent from "../models/torrent";
 import fs from "fs";
+import { sign, verify, decode } from "hono/jwt";
 
 export const downloads = async (ctx) => {
   const data = await torrent.downloads();
   return ctx.json(data);
 };
 
-export const download = async (ctx) => {
-  const query = ctx.req.query("query");
+export const generateDownload = async (ctx) => {
+  const query = ctx.req.query("name");
+  const data = await torrent.downloads();
 
-  if (query.includes("..") || query.includes("/")) {
+  if (!data.complete.find((item) => item.name === query)) {
     return ctx.json(
       {
-        error: "invalid path",
+        error: "not found",
       },
       400
     );
   }
 
-  const filepath = findLargestFileInPath("/app/data/media/" + query);
+  const expiry = new Date();
+  expiry.setHours(expiry.getHours() + 4);
+
+  const token = await sign(
+    {
+      query,
+      expiry: expiry.getTime(),
+    },
+    process.env.JWT_SECRET
+  );
+
+  return ctx.json({
+    token,
+  });
+};
+
+export const download = async (ctx) => {
+  const query = ctx.req.query("token");
+
+  if (!query) {
+    return ctx.json(
+      {
+        error: "no token",
+      },
+      400
+    );
+  }
+
+  try {
+    var decoded = await verify(query, process.env.JWT_SECRET);
+  } catch (e) {
+    return ctx.json(
+      {
+        error: "invalid token",
+      },
+      400
+    );
+  }
+
+  if (decoded.expiry < new Date().getTime()) {
+    return ctx.json(
+      {
+        error: "expired token",
+      },
+      400
+    );
+  }
+
+  const filepath = findLargestFileInPath("/app/data/media/" + decoded.query);
   const filename = filepath.split("/").pop();
   const file = Bun.file(filepath);
   const response = new Response(file);

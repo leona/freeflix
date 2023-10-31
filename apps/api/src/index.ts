@@ -17,6 +17,7 @@ if (!process.env.JWT_SECRET?.length) {
 }
 
 app.post("/auth", handlers.authenticate);
+app.get("/download", handlers.download);
 
 app.use(
   "/*",
@@ -25,6 +26,7 @@ app.use(
   })
 );
 
+app.post("/download", handlers.generateDownload);
 app.get("/search", handlers.search);
 app.get("/downloads", handlers.downloads);
 app.post("/queue", handlers.queue);
@@ -33,7 +35,6 @@ app.delete("/remove-title", handlers.removeTitle);
 app.get("/watch", handlers.watch);
 app.get("/auth", handlers.authCheck);
 app.get("/suggest", handlers.suggest);
-app.get("/download", handlers.download);
 
 console.log("Listening on port 3000");
 export default app;

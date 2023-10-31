@@ -49,8 +49,20 @@ const ItemAction = ({ result }) => {
   }
 
   const download = async () => {
-    const url = `/api/download?query=${result.name}`
-    window.open(url, '_blank')
+    loader.set(true)
+
+    try {
+      const token = await api.generateDownload(result.name)
+      const url = `/api/download?token=${token}`
+      window.open(url, '_blank')
+    } catch (err) {
+      snackbar.add({
+        message: err.message,
+        type: 'error'
+      })
+    }
+
+    loader.set(false)
   }
 
   if (result?.progress < 100) {
