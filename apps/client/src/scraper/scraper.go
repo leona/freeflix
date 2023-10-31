@@ -37,7 +37,7 @@ func MakeScraper() *Scraper {
 
 func (s *Scraper) GetSources() {
 	return[]Source{
-		Make1337xSource()
+		Make1337xSource(),
 	}
 }
 
