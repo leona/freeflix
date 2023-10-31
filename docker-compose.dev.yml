@@ -52,6 +52,7 @@ services:
     command: sh -c "bun install && bun run dev:api"
     volumes:
       - ./:/app
+      - "$OUTPUT_PATH:/media"
   client:
     build:
       context: ./apps/client

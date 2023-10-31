@@ -68,9 +68,7 @@ export const download = async (ctx) => {
     );
   }
 
-  const filepath = findLargestFileInPath(
-    `${process.env.OUTPUT_PATH}/${decoded.query}`
-  );
+  const filepath = findLargestFileInPath(`/media/${decoded.query}`);
   const filename = filepath.split("/").pop();
   const file = Bun.file(filepath);
   const response = new Response(file);
