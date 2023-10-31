@@ -33,6 +33,7 @@ app.delete("/remove-title", handlers.removeTitle);
 app.get("/watch", handlers.watch);
 app.get("/auth", handlers.authCheck);
 app.get("/suggest", handlers.suggest);
+app.get("/download", handlers.download);
 
 console.log("Listening on port 3000");
 export default app;

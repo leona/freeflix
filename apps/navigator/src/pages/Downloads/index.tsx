@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "preact/hooks";
 import api from '@/models/api'
 import Loader from '@/state/loader'
 import Snackbar from '@/state/snackbar'
-import { PrimaryBtn, DangerBtn } from '@/components/Button'
+import { PrimaryBtn, DangerBtn, SecondaryBtn } from '@/components/Button'
 
 const ItemAction = ({ result }) => {
   const loader = useContext(Loader)
@@ -48,6 +48,11 @@ const ItemAction = ({ result }) => {
     loader.set(false)
   }
 
+  const download = async () => {
+    const url = `/api/download?query=${result.name}`
+    window.open(url, '_blank')
+  }
+
   if (result?.progress < 100) {
     return (
       <div class="flex flex-row">
@@ -58,6 +63,7 @@ const ItemAction = ({ result }) => {
     return (
       <div class="flex flex-row space-x-3">
         <PrimaryBtn onClick={watch}>Watch</PrimaryBtn>
+        <SecondaryBtn onClick={download}>Download</SecondaryBtn>
         <DangerBtn onClick={removeByTitle}>Delete</DangerBtn>
       </div>
     )
