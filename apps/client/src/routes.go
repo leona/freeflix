@@ -1,10 +1,10 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
-	"log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -75,4 +75,18 @@ func DownloadsHandler(c *gin.Context) {
 		"complete": downloads,
 		"active":   torrents,
 	})
+}
+
+func QueryHandler(c *gin.Context) {
+	query := c.Query("q")
+	torrents, err := scrapeClient.Query(query)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, torrents)
 }

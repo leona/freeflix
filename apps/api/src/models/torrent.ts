@@ -17,6 +17,23 @@ const downloads = async () => {
   return await response.json();
 };
 
+const search = async (query) => {
+  const response = await fetch(`${baseUrl}/query?q=${query}`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    console.log(
+      "Failed to get search results:",
+      response.statusText,
+      await response.text()
+    );
+    throw new Error("Failed to get search results");
+  }
+
+  return await response.json();
+};
+
 const add = async (magnet) => {
   console.log("adding torrent:", magnet);
 
@@ -83,4 +100,5 @@ export default {
   add,
   remove,
   removeByTitle,
+  search,
 };

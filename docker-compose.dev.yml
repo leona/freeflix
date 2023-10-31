@@ -16,22 +16,6 @@ services:
       - ./Caddyfile.dev:/etc/caddy/Caddyfile
       - ./data/caddy:/data
       - ./config/caddy:/config
-  prowlarr:
-    depends_on:
-      - caddy
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-    volumes:
-      - ./config/prowlarr:/config
-    ports:
-      - 9696:9696
-    restart: unless-stopped
-    networks:
-      - media-server
   jellyfin:
     depends_on:
       - caddy
@@ -73,7 +57,10 @@ services:
       context: ./apps/client
       dockerfile: Dockerfile
     depends_on:
-      - wireguard
+      wireguard:
+        condition: service_healthy
+      caddy:
+        condition: service_started
     working_dir: /app/apps/client
     command: sh -c "echo starting; gow run ./src"
     container_name: client
@@ -86,6 +73,11 @@ services:
   wireguard:
     image: nxie/wireguard:latest
     container_name: wireguard
+    healthcheck:
+      test: bash -c "[ -f /tmp/wireguard.lock ]"
+      interval: 1s
+      timeout: 3s
+      retries: 10
     cap_add:
       - NET_ADMIN
     networks:

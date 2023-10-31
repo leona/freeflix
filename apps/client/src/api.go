@@ -12,6 +12,7 @@ func setupRoutes(r *gin.Engine) {
 	r.POST("/add", AddHandler)
 	r.DELETE("/remove/:hash", RemoveHandler)
 	r.DELETE("/remove", RemoveTitleHandler)
+	r.GET("/query", QueryHandler)
 }
 
 func ServeApi() {

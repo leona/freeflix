@@ -78,7 +78,7 @@ const ItemAction = ({ result , downloads, onDownload}) => {
 		loader.set(true)
 
 		try {
-			await api.queue(result.magnetUrl || result.downloadUrl)
+			await api.queue(result.magnet)
 			await new Promise(r => setTimeout(r, 500));
 
 			snackbar.add({
@@ -98,7 +98,7 @@ const ItemAction = ({ result , downloads, onDownload}) => {
   }
 
 	const combinedDownloads = [...(downloads.active || []), ...(downloads.complete || [])]
-	const exists = combinedDownloads.find((download) => download.name.replace(/-/g, ' ') == result.title.replace(/-/g, ' '))
+	const exists = combinedDownloads.find((download) => download.name.replace(/-/g, ' ') == result.name.replace(/-/g, ' '))
 
   if (exists) {
     return (
@@ -115,7 +115,7 @@ const ItemAction = ({ result , downloads, onDownload}) => {
 
 const Item = ({ result, downloads, onDownload, query }) => {
 	const search = useContext(Search)
-	const title = result.title.replace(/\./g, ' ')	
+	const title = result.name.replace(/\./g, ' ')	
 	const start = title.toLowerCase().indexOf(search.query.toLowerCase())
 	const end = start + search.query.length
 	const before = title.slice(0, start)
@@ -124,7 +124,7 @@ const Item = ({ result, downloads, onDownload, query }) => {
   return (
     <div class="flex flex-row justify-between">
 			<div class="flex flex-col">
-				<a href={result.guid} target="_blank">
+				<a href={result.link} target="_blank">
 					<p class="text-sm">
 						{before}
 						<span class="text-yellow-300">{title.slice(start, end)}</span>
@@ -132,9 +132,9 @@ const Item = ({ result, downloads, onDownload, query }) => {
 					</p>
 				</a>
 				<div class="flex space-x-2">
-					<p class="text-xs">Size: <strong>{bytes(result.size, ["KB", "MB", "GB"])}</strong></p>		
-					<p class="text-xs">Age: <strong>{result.age} days</strong></p>
-					<p class="text-xs">Source: <strong>{result.indexer}</strong></p>
+					<p class="text-xs">Size: <strong>{result.size}</strong></p>		
+					<p class="text-xs">Age: <strong>{result.uploadDate} days</strong></p>
+					<p class="text-xs">Source: <strong>{result.source}</strong></p>
 					<p class="text-xs">Seeders: <strong>{result.seeders}</strong></p>
 				</div>
 			</div>

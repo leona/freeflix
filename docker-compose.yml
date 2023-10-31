@@ -24,27 +24,6 @@ services:
       - ./data/caddy:/data
       - ./config/caddy:/config
       - ./dist/navigator:/srv/navigator
-  prowlarr:
-    profiles: [serve]
-    depends_on:
-      - caddy
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-    volumes:
-      - ./config/prowlarr:/config
-    ports:
-      - 9696:9696
-    restart: unless-stopped
-    networks:
-      - media-server
   jellyfin:
     profiles: [serve]
     depends_on:
@@ -67,7 +46,6 @@ services:
   api:
     profiles: [serve]
     depends_on:
-      - prowlarr
       - caddy
       - client
     logging:
