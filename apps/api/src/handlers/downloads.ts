@@ -82,6 +82,8 @@ export const download = async (ctx) => {
 };
 
 const findLargestFileInPath = (path): string => {
+  console.log("finding largest file in path:", path);
+
   if (!fs.lstatSync(path).isDirectory()) {
     return path;
   }
