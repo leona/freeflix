@@ -21,14 +21,7 @@ func tick() {
 		}
 
 		if info.ModTime().Add(config.MaxDownloadAge * 24 * time.Hour).Before(time.Now()) {
-			err := os.RemoveAll(path)
-
-			if err != nil {
-				log.Println(err)
-				continue
-			}
-
-			log.Println("Deleted:", download.Name)
+			RemoveDownload(download.Name)
 		}
 	}
 }

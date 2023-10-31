@@ -4,14 +4,13 @@ import (
 	"errors"
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/anacrolix/dht/v2"
 	"github.com/anacrolix/torrent"
 	"github.com/dustin/go-humanize"
+	bolt "go.etcd.io/bbolt"
 )
 
 type Torrentclient struct {
@@ -50,6 +49,20 @@ func MakeTorrentclient() *Torrentclient {
 	return torrentclient
 }
 
+func (tc *Torrentclient) CheckExisting() {
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("torrents.magnet.index"))
+		c := b.Cursor()
+
+		for k, v := c.First(); k != nil; k, v = c.Next() {
+			log.Println("Adding existing torrent:", string(k))
+			tc.Add(string(v))
+		}
+
+		return nil
+	})
+}
+
 func LinkToMagnet(link string) (string, error) {
 	log.Println("Converting link to magnet")
 	req, err := http.NewRequest("GET", link, nil)
@@ -86,7 +99,6 @@ func (tc *Torrentclient) Add(magnet string) error {
 		}
 	}
 
-	log.Println("Adding torrent:", magnet, "with public IPs:", tc.Client.PublicIPs())
 	torrent, err := tc.Client.AddMagnet(magnet)
 
 	if err != nil {
@@ -101,6 +113,11 @@ func (tc *Torrentclient) Add(magnet string) error {
 		info := torrent.Info()
 		log.Printf("Received metdata for: %s", info.Name)
 		torrent.DownloadAll()
+
+		db.Update(func(tx *bolt.Tx) error {
+			b := tx.Bucket([]byte("torrents.magnet.index"))
+			return b.Put([]byte(info.Name), []byte(magnet))
+		})
 	}()
 
 	return nil
@@ -111,9 +128,7 @@ func (tc *Torrentclient) Remove(hash string) {
 
 	for _, torrent := range torrents {
 		if torrent.InfoHash().HexString() == hash {
-			torrent.Drop()
-			os.RemoveAll(filepath.Join(config.OutputPath, torrent.Name()))
-			log.Println("Removed torrent:", torrent.Name())
+			RemoveDownload(torrent.Name())
 			break
 		}
 	}

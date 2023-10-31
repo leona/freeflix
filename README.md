@@ -9,7 +9,7 @@ Search, download and watch torrents from a single place. Support for Wireguard w
 ## Features
 
 - [Jellyfin](https://jellyfin.org/) media player & user management
-- React frontend for search/downloads
+- React frontend for search/downloads with support for direct download
 - Go [torrent client](https://github.com/anacrolix/torrent/)
 - 1337x & ThePirateBay scrapers (more planned)
 - [Docker Wireguard](https://github.com/leona/docker-wireguard) with automatic Mullvad configuration
@@ -77,4 +77,3 @@ https://ipleak.net/
 ## Todo
 
 - Scan libraries when torrents complete
-- Verify file downloads on client restart

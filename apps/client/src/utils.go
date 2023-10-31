@@ -1,9 +1,16 @@
 package main
 
 import (
+	"log"
 	"strconv"
 	"strings"
 )
+
+func FatalError(err error) {
+	if err != nil {
+		log.Panic(err)
+	}
+}
 
 func DefaultString(input string, defaultValue string) string {
 	if input == "" {

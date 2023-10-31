@@ -3,8 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -55,9 +54,15 @@ func RemoveTitleHandler(c *gin.Context) {
 		return
 	}
 
-	path := filepath.Join(config.OutputPath, request.Title)
-	log.Println("Deleting", path)
-	os.RemoveAll(path)
+	if strings.Contains(request.Title, "..") || strings.Contains(request.Title, "/") {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid title",
+		})
+
+		return
+	}
+
+	RemoveDownload(request.Title)
 	c.JSON(http.StatusOK, gin.H{})
 }
 
