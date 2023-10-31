@@ -6,14 +6,14 @@ Search, download and watch torrents from a single place. Support for Wireguard w
 
 ![image](https://i.imgur.com/u0O7OA9.png)
 
-## Services
+## Features
 
-- [Prowlarr](https://github.com/Prowlarr/Prowlarr) - Torrent indexer proxy
-- [Jellyfin](https://jellyfin.org/) - Media player & user management
-- [Caddy](https://caddyserver.com/) - Reverse proxy & automatic SSL
-- Navigator - Preact frontend for search/downloads
-- API - JS API for the navigator
-- Client - Go [torrent](https://github.com/anacrolix/torrent)+[Wireguard](https://github.com/WireGuard/wireguard-go) client & API
+- [Jellyfin](https://jellyfin.org/) media player & user management
+- React frontend for search/downloads
+- Go [torrent client](https://github.com/anacrolix/torrent/)
+- 1337x scraper for searches (more planned)
+- [Docker Wireguard](https://github.com/leona/docker-wireguard) with automatic Mullvad configuration
+- [Caddy](https://caddyserver.com/) reverse proxy & automatic SSL
 
 ## Requirements
 
@@ -54,11 +54,7 @@ Config files will be randomly selected each time the client container starts.
 
 `docker-compose --profile build up && docker-compose --profile serve up -d`
 
-### 5. Setup Prowlarr
-
-Go to `localhost:9696` in order to setup a Prowlarr user and add at least 1 or 2 indexers.
-
-### 6. Setup Jellyfin
+### 5. Setup Jellyfin
 
 Go to `localhost:8096` and setup a user and media library. Use /media as the folder and disable meta info checking as it breaks stuff.
 
@@ -66,7 +62,7 @@ Also create an API key from Administration > Dashboard > Advanced > API Keys and
 
 You can get clients for your phone, TV etc. to connect directly to this container.
 
-### 7. Good to go!
+### 6. Good to go!
 
 If you visit `localhost` you should be able to access the frontend. The same user/pass combo as Jellyfin is used here, so you can add users through there.
 
@@ -82,4 +78,3 @@ https://ipleak.net/
 
 - Scan libraries when torrents complete
 - Verify file downloads on client restart
-- Fix issues with prowlarr links
