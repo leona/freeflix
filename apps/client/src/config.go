@@ -15,7 +15,7 @@ func MakeConfig() *Config {
 	config := &Config{
 		OutputPath:     "/data",
 		ApiPort:        DefaultString(os.Getenv("API_PORT"), "80"),
-		MaxDownloadAge: time.Duration(DefaultInt(os.Getenv("MAX_DOWNLOAD_AGE"), 7)),
+		MaxDownloadAge: time.Duration(DefaultInt(os.Getenv("MAX_DOWNLOAD_AGE"), 21)),
 	}
 
 	return config

@@ -27,24 +27,18 @@ type Torrent struct {
 }
 
 type Scraper struct {
-	sources []Source
 }
 
 func MakeScraper() *Scraper {
-	scraper := &Scraper{
-		sources: []Source{},
-	}
+	scraper := &Scraper{}
 
 	return scraper
 }
 
-func (s *Scraper) RegisterSources() {
-	s.sources = []Source{}
-	s.RegisterSource(Make1337xSource())
-}
-
-func (s *Scraper) RegisterSource(source Source) {
-	s.sources = append(s.sources, source)
+func (s *Scraper) GetSources() {
+	return[]Source{
+		Make1337xSource()
+	}
 }
 
 func (s *Scraper) Sort(torrents []Torrent) []Torrent {
@@ -56,10 +50,10 @@ func (s *Scraper) Sort(torrents []Torrent) []Torrent {
 }
 
 func (s *Scraper) Query(query string) ([]Torrent, error) {
-	s.RegisterSources()
+	sources := GetSources
 	var torrents []Torrent
 
-	for _, source := range s.sources {
+	for _, source := range sources {
 		c := colly.NewCollector(
 			colly.MaxDepth(2),
 			colly.Async(),
