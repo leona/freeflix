@@ -1,10 +1,8 @@
 package scraper
 
 import (
-	"fmt"
 	"log"
 	"net/url"
-	"regexp"
 	"strconv"
 
 	"github.com/gocolly/colly/v2"
