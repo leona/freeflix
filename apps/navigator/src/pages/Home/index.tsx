@@ -47,7 +47,7 @@ const SearchInput = ({ value }) => {
 						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
 					</svg>
 				</div>
-				<input type="search" ref={input => input && input.focus()} autoFocus value={search.query} onInput={onInput} id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white border-transparent focus:border-transparent focus:outline-none" placeholder="Search tv/film e.g. The bear s01e02" required />
+				<input type="search" ref={input => input && input.focus()} autoFocus value={search.query} onInput={onInput} id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white border-transparent focus:border-transparent focus:outline-none" placeholder="Search e.g. Alone s01e01" required />
 				<SearchBtn type="submit">Search</SearchBtn>
 			</div>
 			<div id="suggestions" class="mt-2 text-sm text-gray-500 flex flex-row flex-wrap pt-2">

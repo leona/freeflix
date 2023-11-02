@@ -11,7 +11,9 @@ var config *Config
 var scrapeClient *scraper.Scraper
 var db *bolt.DB
 
-func setupDatabase() {
+func main() {
+	scrapeClient = scraper.MakeScraper()
+	config = MakeConfig()
 	var err error
 	db, err = bolt.Open(config.OutputPath+"/.clientdb", 0600, nil)
 	FatalError(err)
@@ -21,12 +23,7 @@ func setupDatabase() {
 		FatalError(err)
 		return nil
 	})
-}
 
-func main() {
-	scrapeClient = scraper.MakeScraper()
-	config = MakeConfig()
-	setupDatabase()
 	defer db.Close()
 	go cleanup()
 	gin.SetMode(gin.ReleaseMode)

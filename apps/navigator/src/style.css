@@ -60,7 +60,7 @@ main {
 
 @media (max-width: 639px) {
 	main {
-		margin: 2rem;
+		padding: 2rem;
 	}
 }
 
