@@ -1,6 +1,6 @@
 import torrent from "../models/torrent";
-import fs from "fs";
-import { sign, verify, decode } from "hono/jwt";
+import { sign, verify } from "hono/jwt";
+import { findLargestFileInPath } from "@packages/utils/std/files";
 
 export const downloads = async (ctx) => {
   const data = await torrent.downloads();
@@ -79,26 +79,4 @@ export const download = async (ctx) => {
   );
 
   return response;
-};
-
-const findLargestFileInPath = (path): string => {
-  console.log("finding largest file in path:", path);
-
-  if (!fs.lstatSync(path).isDirectory()) {
-    return path;
-  }
-
-  const files = fs.readdirSync(path);
-
-  const largest = files
-    .map((file) => {
-      const stat = fs.statSync(`${path}/${file}`);
-      return {
-        file,
-        size: stat.size,
-      };
-    })
-    .sort((a, b) => b.size - a.size)[0];
-
-  return `${path}/${largest.file}`;
 };

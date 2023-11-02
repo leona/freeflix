@@ -3,7 +3,6 @@ import { route } from 'preact-router';
 
 import { useEffect, useState, useContext } from "preact/hooks";
 import api from '@/models/api'
-import { bytes } from '@packages/utils/std/normalise';
 import { SearchBtn, SecondaryBtn } from '@/components/Button'
 import Loader from '@/state/loader.js';
 import Search from '@/state/search.js';
