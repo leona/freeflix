@@ -48,6 +48,7 @@ services:
     depends_on:
       - caddy
       - client
+      - wireguard
     logging:
       options:
         max-size: "10m"
